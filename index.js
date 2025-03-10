@@ -31,8 +31,19 @@ async function run() {
     const eventCalection = client
       .db("persist-systemic-job-task")
       .collection("all-Event");
-    //
+    // get all data
+    app.get("/allData", async (req, res) => {
+      const data = eventCalection.find();
+      const result = await data.toArray();
+      res.send(result);
+    });
 
+    app.post("/eventData", async (req, res) => {
+      const data = req.body;
+      //   console.log(data);
+      const result = await eventCalection.insertOne(data);
+      res.send(result);
+    });
     // work
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
