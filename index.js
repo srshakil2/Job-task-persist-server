@@ -33,6 +33,14 @@ async function run() {
       .collection("all-Event");
     // get all data
     app.get("/allData", async (req, res) => {
+      const search = req?.query?.search;
+      if (search) {
+        const filter = {
+          Category: { $regex: search, $options: "i" },
+        };
+        const results = await eventCalection.find(filter).toArray();
+        return res.send(results);
+      }
       const data = eventCalection.find();
       const result = await data.toArray();
       res.send(result);
